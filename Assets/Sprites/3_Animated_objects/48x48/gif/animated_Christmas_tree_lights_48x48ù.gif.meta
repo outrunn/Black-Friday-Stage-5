@@ -497,7 +497,22 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "animated_Christmas_tree_lights_48x48u\u0300_0": 8169954557234409237
+      "animated_Christmas_tree_lights_48x48u\u0300_1": 2503667737403239138
+      "animated_Christmas_tree_lights_48x48u\u0300_10": -6492121287790783533
+      "animated_Christmas_tree_lights_48x48u\u0300_11": 1626596777202966726
+      "animated_Christmas_tree_lights_48x48u\u0300_12": 2278258771931418803
+      "animated_Christmas_tree_lights_48x48u\u0300_13": -2790162580081891829
+      "animated_Christmas_tree_lights_48x48u\u0300_14": -3563297792823524356
+      "animated_Christmas_tree_lights_48x48u\u0300_2": -4236126625562230809
+      "animated_Christmas_tree_lights_48x48u\u0300_3": -5931780382233634790
+      "animated_Christmas_tree_lights_48x48u\u0300_4": 4895360236876721297
+      "animated_Christmas_tree_lights_48x48u\u0300_5": 1939739243982000308
+      "animated_Christmas_tree_lights_48x48u\u0300_6": 5256279920607416376
+      "animated_Christmas_tree_lights_48x48u\u0300_7": 6951316656185533461
+      "animated_Christmas_tree_lights_48x48u\u0300_8": 3690357330092270343
+      "animated_Christmas_tree_lights_48x48u\u0300_9": 5299253066156868258
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

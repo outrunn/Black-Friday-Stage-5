@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Molly_reading_16x16_0: -466814580743923099
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

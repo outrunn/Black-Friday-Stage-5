@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      animated_kitchen_drawer_2_0: -850955904369708353
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

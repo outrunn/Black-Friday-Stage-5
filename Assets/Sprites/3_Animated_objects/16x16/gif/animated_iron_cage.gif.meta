@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      animated_iron_cage_0: 3673966623500990020
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
