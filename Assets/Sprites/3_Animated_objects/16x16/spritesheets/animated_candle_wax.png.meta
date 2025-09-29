@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      animated_candle_wax_0: -7260607533295790577
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

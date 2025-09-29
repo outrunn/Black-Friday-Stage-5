@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      animated_bathtub_with_duck_0: 1207003188207726270
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
