@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      animated_sink_0: 4659662399637286026
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
