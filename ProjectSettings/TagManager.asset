@@ -5,14 +5,16 @@ TagManager:
   serializedVersion: 3
   tags:
   - wall
+  - Enemy
+  - Collectible
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - obstacles
+  - Obstacles
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 
