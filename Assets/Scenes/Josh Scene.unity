@@ -406,10 +406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6da6f6c51bce4a948e1390466835c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volume: {fileID: 845512710}
-  speed: 2
-  minIntensity: 1
-  maxIntensity: 5
 --- !u!50 &1071221075
 Rigidbody2D:
   serializedVersion: 5
@@ -485,10 +481,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6da6f6c51bce4a948e1390466835c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< Updated upstream
   volume: {fileID: 845512710}
   speed: 2
   minIntensity: 0.5
   maxIntensity: 2
+=======
+>>>>>>> Stashed changes
 --- !u!1 &1258803286
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,11 +593,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1402514628}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 863d0cd267f2b4b4ab2a20a4bd2dfa88, type: 3}
+  m_Script: {fileID: 11500000, guid: fee700a1319ce4869b6d80c7095ba34b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   timeRemaining: 300
-  timerIsRunning: 0
+  timerIsRunning: 1
   timeText: {fileID: 1801133528}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   warningColor: {r: 1, g: 0, b: 0, a: 1}
