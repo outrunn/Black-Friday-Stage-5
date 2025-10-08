@@ -756,6 +756,7 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -855,6 +856,8 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+=======
+>>>>>>> 2fb781afb7095444b0904b757a77b8e05de97613
 --- !u!1 &1801133526
 GameObject:
   m_ObjectHideFlags: 0

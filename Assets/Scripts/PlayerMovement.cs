@@ -19,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        //lock player movement if game is not playing
+        if (GameStateManager.Instance.CurrentState != GameState.Playing) { return; }
+
         // Read input (WASD/Arrow Keys by default Unity axes)
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");

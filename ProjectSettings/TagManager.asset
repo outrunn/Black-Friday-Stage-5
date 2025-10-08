@@ -3,17 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags:
-  - wall
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - obstacles
+  - 
   - Water
   - UI
-  - Glow
-  - PostProcessing
+  - 
+  - 
   - 
   - 
   - 
