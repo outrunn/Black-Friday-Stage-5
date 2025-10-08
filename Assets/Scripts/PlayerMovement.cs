@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 
@@ -14,6 +16,11 @@ public class PlayerMovement : MonoBehaviour
     public int lives;
     [SerializeField] private TextMeshProUGUI livesText;
 
+    //Damage Stuff
+    private SpriteRenderer spriteRenderer;
+    private Color damageColor = new Color(255f / 255f, 0f / 255f, 0f / 255f);
+    private Color originalColor;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -21,6 +28,9 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = false;   // we control rotation in code
         lives = 3;
         livesText.text = "Lives: " + lives;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
     }
 
     private void Update()
@@ -50,4 +60,44 @@ public class PlayerMovement : MonoBehaviour
 
         rb.linearVelocity = velocity * moveSpeed;
     }
+
+    public void TakeDamage()
+    {
+        StartCoroutine(FlashRed());
+    }
+
+    IEnumerator FlashRed()
+    {
+        spriteRenderer.color = damageColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = originalColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = damageColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = originalColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = damageColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = originalColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = damageColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = originalColor;
+    }
+
+
 }
