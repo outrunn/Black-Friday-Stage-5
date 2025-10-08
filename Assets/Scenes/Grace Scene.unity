@@ -7746,6 +7746,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000733139}
   m_Enabled: 1
   m_EditorHideFlags: 0
+<<<<<<< Updated upstream
 <<<<<<< HEAD
   m_Script: {fileID: 11500000, guid: fee700a1319ce4869b6d80c7095ba34b, type: 3}
   m_Name: 
@@ -7759,6 +7760,13 @@ MonoBehaviour:
   timeRemaining: 300
   timerIsRunning: 0
 >>>>>>> 2fb781afb7095444b0904b757a77b8e05de97613
+=======
+  m_Script: {fileID: 11500000, guid: fee700a1319ce4869b6d80c7095ba34b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TimerUI
+  timeRemaining: 300
+  timerIsRunning: 1
+>>>>>>> Stashed changes
   timeText: {fileID: 1746799744}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   warningColor: {r: 1, g: 0, b: 0, a: 1}
