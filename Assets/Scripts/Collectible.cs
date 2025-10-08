@@ -1,8 +1,11 @@
+using TMPro;
 using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
     private CircleCollider2D collider;
+
+    [SerializeField] private TextMeshProUGUI collectiblesText;
 
     void Awake()
     {
@@ -16,6 +19,8 @@ public class Collectible : MonoBehaviour
         {
             Destroy(gameObject); //destroy this object
             GameStateManager.Instance.numOfCollectibles++; //increase the number ofcollectibles by 1
+
+            collectiblesText.text = GameStateManager.Instance.numOfCollectibles + "/ 2";
         }
     }
 }
