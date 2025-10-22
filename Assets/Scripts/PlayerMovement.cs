@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Threading;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -10,11 +13,24 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 input;           // raw input each frame
 
+    public int lives;
+    [SerializeField] private TextMeshProUGUI livesText;
+
+    //Damage Stuff
+    private SpriteRenderer spriteRenderer;
+    private Color damageColor = new Color(255f / 255f, 0f / 255f, 0f / 255f);
+    private Color originalColor;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;        // top-down 2D
         rb.freezeRotation = false;   // we control rotation in code
+        lives = 3;
+        livesText.text = "Lives: " + lives;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
     }
 
     private void Update()
@@ -32,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
             float angle = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
         }
+        livesText.text = "Lives: " + lives;
     }
 
     private void FixedUpdate()
@@ -43,4 +60,44 @@ public class PlayerMovement : MonoBehaviour
 
         rb.linearVelocity = velocity * moveSpeed;
     }
+
+    public void TakeDamage()
+    {
+        StartCoroutine(FlashRed());
+    }
+
+    IEnumerator FlashRed()
+    {
+        spriteRenderer.color = damageColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = originalColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = damageColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = originalColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = damageColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = originalColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = damageColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = originalColor;
+    }
+
+
 }

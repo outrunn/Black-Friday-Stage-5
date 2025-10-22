@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public enum GameState
@@ -18,6 +19,9 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private GameObject gameHudPanel;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject gameOverPanel;
+
+    //Text
+    [SerializeField] private TextMeshProUGUI collectiblesText;
 
     //Player
     [SerializeField] private GameObject player;

@@ -49,6 +49,7 @@ public class TimerUI : MonoBehaviour
                 timeRemaining = 0;
                 timerIsRunning = false;
                 timeText.color = normalColor; // reset to normal color
+                GameStateManager.Instance.SetState(GameState.GameOver);
             }
         }
     }
