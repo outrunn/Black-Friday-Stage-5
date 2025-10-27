@@ -27,7 +27,10 @@ public class PlayerMovement : MonoBehaviour
         rb.gravityScale = 0f;        // top-down 2D
         rb.freezeRotation = false;   // we control rotation in code
         lives = 3;
-        livesText.text = "Lives: " + lives;
+        if (livesText != null)
+        {
+            livesText.text = "Lives: " + lives;
+        }
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
@@ -48,7 +51,10 @@ public class PlayerMovement : MonoBehaviour
             float angle = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
         }
-        livesText.text = "Lives: " + lives;
+        if (livesText != null)
+        {
+            livesText.text = "Lives: " + lives;
+        }
     }
 
     private void FixedUpdate()
