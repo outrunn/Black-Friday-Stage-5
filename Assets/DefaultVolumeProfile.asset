@@ -1,7 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
-<<<<<<< HEAD
-=======
 --- !u!114 &-8186968272690591729
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -476,7 +474,6 @@ MonoBehaviour:
   clamp:
     m_OverrideState: 1
     m_Value: 0.05
->>>>>>> 2fb781afb7095444b0904b757a77b8e05de97613
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
