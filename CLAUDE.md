@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a 2D top-down Unity game called "Stage5BlackFridayGame" built with Unity 2D packages. The game features player movement, collectible gathering, lives/damage system, and state management.
+This is a 2D top-down Unity game called "Stage5BlackFridayGame" built with Unity 2D packages. The game features player movement, ai enemies, collectible gathering, lives/damage system, and state management.
 
 ## Key Architecture
 
