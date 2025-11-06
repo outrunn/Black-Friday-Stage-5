@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.98742133, g: 0.97679865, b: 0.7855899, a: 0.8627451}
+  m_Color: {r: 0.9882353, g: 0.9764706, b: 0.78431374, a: 0.8627451}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 1481641831393335384}
   - component: {fileID: 6515312295916407583}
   m_Layer: 0
-  m_Name: Lucy
+  m_Name: Molly
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -244,9 +244,9 @@ MonoBehaviour:
   rotationAngle: 90
   rotationSpeed: 0.3
   viewArea: {fileID: 7952439980795462095}
-  moves: 1
-  moveDistance: 5
-  movementSpeed: 4
+  moves: 0
+  moveDistance: 10
+  movementSpeed: 10
   waitTimeRange: {x: 1, y: 3}
   animator: {fileID: 2444763753895036342}
 --- !u!1 &7952439980795462095
@@ -359,7 +359,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -444632798118869111, guid: 1e3e6c7ee383e4913a89132372a33f24, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -367,7 +367,7 @@ SpriteRenderer:
   m_Size: {x: 0.5, y: 0.67}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!70 &7686737106940437781
@@ -417,7 +417,7 @@ Animator:
   m_GameObject: {fileID: 8116900514648858007}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fcb839aaa71fb3c40859e1843060a0f2, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

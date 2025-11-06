@@ -14,18 +14,43 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float moveDistance = 5f;
     [SerializeField] private float movementSpeed = 2f;
     [SerializeField] private Vector2 waitTimeRange = new Vector2(1f, 3f);
+    [SerializeField, Tooltip("0 up, 1 right, 2 down, 3 left")] private int moveDirection = 0;
+    int currentDirection = 0;
 
     [Header("Animation Settings")]
     [SerializeField] private Animator animator;
 
     private float startAngle;
-    private int currentDirection = 0; // 0 up, 1 right, 2 down, 3 left
     private bool isMoving = false;
+
+    void Awake()
+    {
+        currentDirection = moveDirection;
+        animator.SetInteger("direction", currentDirection);
+
+        //currentDirection = (currentDirection + 3) % 4; // equivalent to -1 mod 4
+        switch (currentDirection)
+        {
+            case 0: //up
+                viewArea.transform.rotation = Quaternion.Euler(0f, 0f, 0);
+                break;
+            case 1: //right
+                viewArea.transform.rotation = Quaternion.Euler(0f, 0f, 270);
+                break;
+            case 2: //down
+                viewArea.transform.rotation = Quaternion.Euler(0f, 0f, 180);
+                break;
+            case 3: //left
+                viewArea.transform.rotation = Quaternion.Euler(0f, 0f, 90);
+                break;
+        }
+        
+    }
 
     void Start()
     {
         startAngle = transform.eulerAngles.z;
-
+        
         if (rotates && moves)
         {
             Debug.Log("Turning off both rotates and moves -- both were set to true");
@@ -34,7 +59,10 @@ public class EnemyMovement : MonoBehaviour
         }
 
         if (moves)
+        {
             StartCoroutine(PatrolRoutine());
+        }
+            
     }
 
     void Update()
