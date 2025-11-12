@@ -244,10 +244,11 @@ MonoBehaviour:
   rotationAngle: 90
   rotationSpeed: 0.3
   viewArea: {fileID: 7952439980795462095}
-  moves: 0
+  moves: 1
   moveDistance: 10
-  movementSpeed: 10
+  movementSpeed: 5
   waitTimeRange: {x: 1, y: 3}
+  moveDirection: 0
   animator: {fileID: 2444763753895036342}
 --- !u!1 &7952439980795462095
 GameObject:
@@ -359,7 +360,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -2649458728819362770, guid: aefdade21be5740299a4c01cc411323b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -367,7 +368,7 @@ SpriteRenderer:
   m_Size: {x: 0.5, y: 0.67}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!70 &7686737106940437781
@@ -417,7 +418,7 @@ Animator:
   m_GameObject: {fileID: 8116900514648858007}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0ec54248b84d2974e9ba7e487d044e1e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

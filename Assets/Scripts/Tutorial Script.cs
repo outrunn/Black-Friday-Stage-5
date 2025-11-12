@@ -1,44 +1,54 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using Yarn.Unity;
 
 public class TutorialScript : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI tutorialText; //instructions
-    [SerializeField] private GameObject collectable; //image of the object that the user needs 
-                                                     //to collect
+    [SerializeField] private DialogueRunner dialogueRunner;
 
-    [SerializeField] private float timeInbetweenText = 2f;
+    public string startNode = "IntroScript";    // name of the node to run
+
+    [SerializeField] private GameObject bossSprite;
+    [SerializeField] private GameObject infoPanel;
+    [SerializeField] private GameObject player;
+    [SerializeField] private Transform tutorialSpawn;
+    [SerializeField] private Transform mainSpawn;
+
 
     void Start()
     {
-        tutorialText.text = ""; //make sure that the text is blank
-        collectable.SetActive(false); 
+        player.SetActive(false);
+        dialogueRunner.StartDialogue(startNode);
 
-        StartCoroutine(TutorialRoutine()); //starts the coroutine
+        dialogueRunner.onNodeStart.AddListener(OnNodeStart);
+        dialogueRunner.onNodeComplete.AddListener(OnNodeEnd);
+        bossSprite.SetActive(false);
+        infoPanel.SetActive(true);
     }
 
-    //coroutine that switches the instructions text and waits 2 seconds inbetween each text change
-    IEnumerator TutorialRoutine()
+    void OnNodeStart(string nodeName)
     {
-        tutorialText.text = "Escape the store";
-
-        yield return new WaitForSeconds(timeInbetweenText); //wait 
-
-        tutorialText.text = "Find the 2 collectibles";
-        collectable.SetActive(true); //set the object to be visible so the user knows 
-                                     //what they need to collect
-
-        yield return new WaitForSeconds(timeInbetweenText); //wait
-
-        collectable.SetActive(false); //set the object to be invisible
-
-        tutorialText.text = "You have 5 minutes to find the collectibles and escape";
-
-        yield return new WaitForSeconds(timeInbetweenText); //wait
-
-        tutorialText.text = "Good Luck";
-
-        GameStateManager.Instance.SetState(GameState.Playing); //start the game and the timer
+        if (nodeName == "BossNode")
+        {
+            // Set boss sprite active
+            bossSprite.SetActive(true);
+        }
     }
+    void OnNodeEnd(string nodeName)
+    {
+        if (nodeName == "BossNode")
+        {
+            // Set boss sprite active
+            bossSprite.SetActive(false);
+            player.transform.position = tutorialSpawn.position;
+            player.SetActive(true);
+        }
+        else if (nodeName == "Tutorial")
+        {
+            infoPanel.SetActive(true);
+        }
+    }
+
+
 }
