@@ -4,6 +4,7 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
     private CircleCollider2D collider;
+    //[SerializeField] private bool tutorialCollectible;
 
     [SerializeField] private TextMeshProUGUI collectiblesText;
 
@@ -18,9 +19,20 @@ public class Collectible : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Destroy(gameObject); //destroy this object
-            GameStateManager.Instance.numOfCollectibles++; //increase the number ofcollectibles by 1
+            
+            if (GameStateManager.Instance.CurrentState == GameState.Playing)
+            {
+                GameStateManager.Instance.numOfCollectibles++; //increase the number ofcollectibles by 1
 
-            collectiblesText.text = GameStateManager.Instance.numOfCollectibles + "/ 2";
+                collectiblesText.text = GameStateManager.Instance.numOfCollectibles + "/ 2";  
+            }
+            else if (GameStateManager.Instance.CurrentState == GameState.Tutorial)
+            {
+                GameStateManager.Instance.numOfTutorialCollectibles++; //increase the number ofcollectibles by 1
+
+                collectiblesText.text = GameStateManager.Instance.numOfTutorialCollectibles + "/ 1"; 
+            }
+            
         }
     }
 }

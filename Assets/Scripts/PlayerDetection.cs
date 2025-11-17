@@ -8,8 +8,6 @@ public class PlayerDetection : MonoBehaviour
     private PolygonCollider2D polyCollider;
     private SpriteRenderer spriteRenderer;
 
-    [SerializeField] private GameObject hudPanel;
-
     void Awake()
     {
         polyCollider = GetComponent<PolygonCollider2D>();

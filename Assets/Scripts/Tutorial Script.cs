@@ -14,17 +14,17 @@ public class TutorialScript : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private Transform tutorialSpawn;
     [SerializeField] private Transform mainSpawn;
+    
 
 
     void Start()
     {
         player.SetActive(false);
-        dialogueRunner.StartDialogue(startNode);
 
         dialogueRunner.onNodeStart.AddListener(OnNodeStart);
         dialogueRunner.onNodeComplete.AddListener(OnNodeEnd);
         bossSprite.SetActive(false);
-        infoPanel.SetActive(true);
+        infoPanel.SetActive(false);
     }
 
     void OnNodeStart(string nodeName)
@@ -41,12 +41,14 @@ public class TutorialScript : MonoBehaviour
         {
             // Set boss sprite active
             bossSprite.SetActive(false);
+            GameStateManager.Instance.SetState(GameState.Tutorial);
             player.transform.position = tutorialSpawn.position;
             player.SetActive(true);
         }
         else if (nodeName == "Tutorial")
         {
-            infoPanel.SetActive(true);
+            infoPanel.SetActive(false);
+            // player.transform.position = mainSpawn.position;
         }
     }
 
