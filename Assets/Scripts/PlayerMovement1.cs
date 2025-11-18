@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerSpriteController spriteController;
 
     public int lives;
+    public bool takeDamage = true;
     [SerializeField] private TextMeshProUGUI livesText;
 
     //Damage Stuff
@@ -26,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;        // top-down 2D
         rb.freezeRotation = true;    // no rotation needed with sprite switching
-        lives = 3;
+        lives = 10000000;
         if (livesText != null)
         {
             livesText.text = "Lives: " + lives;
@@ -36,12 +37,14 @@ public class PlayerMovement : MonoBehaviour
         originalColor = spriteRenderer.color;
 
         spriteController = GetComponent<PlayerSpriteController>();
+
+        takeDamage = true;
     }
 
     private void Update()
     {
         //lock player movement if game is not playing
-        if (GameStateManager.Instance != null && GameStateManager.Instance.CurrentState != GameState.Playing && GameStateManager.Instance.CurrentState != GameState.Tutorial) { return; }
+        if (GameStateManager.Instance != null && GameStateManager.Instance.CurrentState != GameState.Playing && GameStateManager.Instance.CurrentState != GameState.Tutorial) { input = Vector2.zero; return; }
 
         // Read input (WASD/Arrow Keys by default Unity axes)
         float x = Input.GetAxisRaw("Horizontal");
@@ -88,13 +91,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator FlashRed()
     {
-        spriteRenderer.color = damageColor;
-
-        yield return new WaitForSeconds(.1f);
-
-        spriteRenderer.color = originalColor;
-
-        yield return new WaitForSeconds(.1f);
+        takeDamage = false;
 
         spriteRenderer.color = damageColor;
 
@@ -117,6 +114,16 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(.1f);
 
         spriteRenderer.color = originalColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = damageColor;
+
+        yield return new WaitForSeconds(.1f);
+
+        spriteRenderer.color = originalColor;
+
+        takeDamage = true;
     }
 
 

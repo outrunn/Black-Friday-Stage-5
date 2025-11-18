@@ -8,8 +8,6 @@ public class ExitScript : MonoBehaviour
 {
     private BoxCollider2D collider;
     [SerializeField] private GameObject infoPanel;
-    [SerializeField] private GameObject countDownPanel;
-    [SerializeField] private TextMeshProUGUI countDownText;
     [SerializeField] private GameObject player;
     [SerializeField] private Transform mainSpawn;
 
@@ -39,8 +37,7 @@ public class ExitScript : MonoBehaviour
             if (collision.CompareTag("Player") && GameStateManager.Instance.numOfTutorialCollectibles == 1)
             {
                 player.transform.position = mainSpawn.position;
-                //GameStateManager.Instance.SetState(GameState.Playing);
-                StartCoroutine(startGame());
+                GameStateManager.Instance.SetState(GameState.CountDown);
             }
             else if (collision.CompareTag("Player") && GameStateManager.Instance.numOfTutorialCollectibles != 1)
             {
@@ -57,26 +54,5 @@ public class ExitScript : MonoBehaviour
         infoPanel.SetActive(true);
         yield return new WaitForSeconds(2f);
         infoPanel.SetActive(false);
-    }
-
-    IEnumerator startGame()
-    {
-        countDownPanel.SetActive(true);
-        countDownText.text = "3";
-
-        yield return new WaitForSeconds(1f);
-
-        countDownText.text = "2";
-
-        yield return new WaitForSeconds(1f);
-
-        countDownText.text = "1";
-
-        yield return new WaitForSeconds(1f);
-
-        countDownPanel.SetActive(false);
-
-        GameStateManager.Instance.SetState(GameState.Playing);
-
     }
 }

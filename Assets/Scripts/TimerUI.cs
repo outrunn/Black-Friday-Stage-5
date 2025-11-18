@@ -21,14 +21,15 @@ public class TimerUI : MonoBehaviour
     void Update()
     {
         //turn on timer when gamestate is playing
-        if (GameStateManager.Instance.CurrentState == GameState.Playing)
-        {
-            timerIsRunning = true;
-        }
-        else
-        {
-            timerIsRunning = false;
-        }
+        // if (GameStateManager.Instance.CurrentState == GameState.Playing)
+        // {
+        //     timerIsRunning = true;
+        // }
+        // else
+        // {
+        //     timerIsRunning = false;
+        //     timeRemaining = 300f;
+        // }
         if (timerIsRunning)
         {
             if (timeRemaining > 0)
