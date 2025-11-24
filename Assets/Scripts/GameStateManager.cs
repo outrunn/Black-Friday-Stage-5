@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using Yarn.Unity;
 
 public enum GameState
@@ -79,6 +80,16 @@ public class GameStateManager : MonoBehaviour
 
         UpdateUI();
     }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Q))
+        {
+            player.SetActive(true);
+            SetState(GameState.CountDown);
+        }
+    }
+
     public void startCountDown()
     {
         SetState(GameState.CountDown);
@@ -122,6 +133,7 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.Victory:
                 winPanel.SetActive(true);
+                Time.timeScale = 0f; //freezes the whole game
                 break;
             case GameState.Tutorial:
                 tutorialPanel.SetActive(true);
@@ -130,6 +142,7 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.CountDown:
                 player.transform.position = mainSpawn.position;
+                dialogueRunner.Stop();
                 StartCoroutine(startGame());
                 break;
         }

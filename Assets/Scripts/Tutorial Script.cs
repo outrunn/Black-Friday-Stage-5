@@ -27,6 +27,10 @@ public class TutorialScript : MonoBehaviour
         infoPanel.SetActive(false);
     }
 
+    void Update()
+    {
+    }
+
     void OnNodeStart(string nodeName)
     {
         if (nodeName == "BossNode")

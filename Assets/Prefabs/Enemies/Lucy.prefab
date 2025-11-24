@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6279342908259338165}
   - component: {fileID: 5056274409209046635}
-  - component: {fileID: 6715785016443269592}
   - component: {fileID: 6272457623639275122}
+  - component: {fileID: 7084236707974934125}
   m_Layer: 0
   m_Name: View Area
   m_TagString: Untagged
@@ -89,7 +89,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &6715785016443269592
+--- !u!114 &6272457623639275122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7153953035947944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01d0a0abe9725084fb5cd5e2d691ffa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDetection
+--- !u!60 &7084236707974934125
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,21 +148,9 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0, y: 0.5773587}
-      - {x: -0.5, y: -0.28866667}
-      - {x: 0.5, y: -0.28866667}
+      - {x: -0.45286986, y: -0.25725612}
+      - {x: 0.42407963, y: -0.25723878}
   m_UseDelaunayMesh: 0
---- !u!114 &6272457623639275122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7153953035947944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01d0a0abe9725084fb5cd5e2d691ffa5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerDetection
 --- !u!1 &6671836514848697151
 GameObject:
   m_ObjectHideFlags: 0
