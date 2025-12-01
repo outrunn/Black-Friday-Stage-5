@@ -12,22 +12,25 @@ public class PlayerDetection : MonoBehaviour
     void Awake()
     {
         polyCollider = GetComponent<PolygonCollider2D>();
-
     }
-
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        //check if the view area collided with the player
+        // NEW LINE → ignore the player while invisible
+        if (EnemyVisionController.PlayerInvisible)
+            return;
+
+        // Check if the view area collided with the player
         if (collision.CompareTag("Player"))
         {
             PlayerMovement player = collision.GetComponent<PlayerMovement>();
-            
+
             if (!player.takeDamage)
             {
                 Debug.Log("Cannot Take Damage right now");
                 return;
             }
+
             if (player.lives > 1)
             {
                 Debug.Log("You took damage during " + GameStateManager.Instance.CurrentState);
@@ -36,16 +39,9 @@ public class PlayerDetection : MonoBehaviour
             }
             else
             {
-                //Destroy(collision.gameObject);
-                //Set the state to GameOver and open up the game panel
+                // Set the state to GameOver and open up the game panel
                 GameStateManager.Instance.SetState(GameState.GameOver);
-
             }
-
         }
     }
-
-
-
-    
 }

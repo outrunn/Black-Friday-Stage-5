@@ -7,17 +7,17 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private float moveSpeed = 2f;            // Units per second
+    [SerializeField] private float moveSpeed = 2f; // Units per second
 
     private Rigidbody2D rb;
-    private Vector2 input;           // raw input each frame
+    private Vector2 input; // raw input each frame
     private PlayerSpriteController spriteController;
 
     public int lives;
     public bool takeDamage = true;
     [SerializeField] private TextMeshProUGUI livesText;
 
-    //Damage Stuff
+    // Damage Stuff
     private SpriteRenderer spriteRenderer;
     private Color damageColor = new Color(255f / 255f, 0f / 255f, 0f / 255f);
     private Color originalColor;
@@ -25,8 +25,9 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 0f;        // top-down 2D
-        rb.freezeRotation = true;    // no rotation needed with sprite switching
+        rb.gravityScale = 0f;           // top-down 2D
+        rb.freezeRotation = true;       // no rotation needed with sprite switching
+
         lives = 10000000;
         if (livesText != null)
         {
@@ -43,8 +44,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        //lock player movement if game is not playing
-        if (GameStateManager.Instance != null && GameStateManager.Instance.CurrentState != GameState.Playing && GameStateManager.Instance.CurrentState != GameState.Tutorial) { input = Vector2.zero; return; }
+        // lock player movement if game is not playing
+        if (GameStateManager.Instance != null &&
+            GameStateManager.Instance.CurrentState != GameState.Playing &&
+            GameStateManager.Instance.CurrentState != GameState.Tutorial)
+        {
+            input = Vector2.zero;
+            return;
+        }
 
         // Read input (WASD/Arrow Keys by default Unity axes)
         float x = Input.GetAxisRaw("Horizontal");
@@ -54,15 +61,15 @@ public class PlayerMovement : MonoBehaviour
         // Prioritize vertical movement over horizontal when both are pressed
         if (y != 0)
         {
-            input = new Vector2(0, y); // Only vertical movement
+            input = new Vector2(0, y);    // Only vertical movement
         }
         else if (x != 0)
         {
-            input = new Vector2(x, 0); // Only horizontal movement
+            input = new Vector2(x, 0);    // Only horizontal movement
         }
         else
         {
-            input = Vector2.zero; // No movement
+            input = Vector2.zero;         // No movement
         }
 
         // Update sprite direction based on movement input
@@ -79,8 +86,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // --- Movement ---
-        // Input is already restricted to 4 directions in Update(), no normalization needed
+        // Movement (original version used linearVelocity, keeping it unchanged)
         rb.linearVelocity = input * moveSpeed;
     }
 
@@ -94,37 +100,49 @@ public class PlayerMovement : MonoBehaviour
         takeDamage = false;
 
         spriteRenderer.color = damageColor;
-
         yield return new WaitForSeconds(.1f);
 
         spriteRenderer.color = originalColor;
-
         yield return new WaitForSeconds(.1f);
 
         spriteRenderer.color = damageColor;
-
         yield return new WaitForSeconds(.1f);
 
         spriteRenderer.color = originalColor;
-
         yield return new WaitForSeconds(.1f);
 
         spriteRenderer.color = damageColor;
-
         yield return new WaitForSeconds(.1f);
 
         spriteRenderer.color = originalColor;
-
         yield return new WaitForSeconds(.1f);
 
         spriteRenderer.color = damageColor;
-
         yield return new WaitForSeconds(.1f);
 
         spriteRenderer.color = originalColor;
 
         takeDamage = true;
     }
+    // --- POWER-UP SUPPORT FUNCTIONS ---
 
+    public float GetMoveSpeed()
+    {
+        return moveSpeed;
+    }
+
+    public void SetMoveSpeed(float newSpeed)
+    {
+        moveSpeed = newSpeed;
+    }
+
+    public void AddLife(int amount)
+    {
+        lives += amount;
+        if (livesText != null)
+        {
+            livesText.text = "Lives: " + lives;
+        }
+    }
 
 }
