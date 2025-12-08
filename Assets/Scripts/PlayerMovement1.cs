@@ -13,6 +13,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 input; // raw input each frame
     private PlayerSpriteController spriteController;
 
+    // Track previous frame input to detect new key presses
+    private float previousX = 0f;
+    private float previousY = 0f;
+
     public int lives;
     public bool takeDamage = true;
     [SerializeField] private TextMeshProUGUI livesText;
@@ -58,19 +62,52 @@ public class PlayerMovement : MonoBehaviour
         float y = Input.GetAxisRaw("Vertical");
 
         // Restrict to 4 directions only (no diagonals)
-        // Prioritize vertical movement over horizontal when both are pressed
-        if (y != 0)
+        // Use last-pressed-key-wins logic for responsive direction changes
+
+        // Detect newly pressed keys this frame
+        bool xNewlyPressed = (x != 0 && previousX == 0);
+        bool yNewlyPressed = (y != 0 && previousY == 0);
+
+        // Prioritize newly pressed keys first
+        if (xNewlyPressed)
         {
-            input = new Vector2(0, y);    // Only vertical movement
+            // Horizontal key just pressed - switch to horizontal immediately
+            input = new Vector2(x, 0);
+        }
+        else if (yNewlyPressed)
+        {
+            // Vertical key just pressed - switch to vertical immediately
+            input = new Vector2(0, y);
+        }
+        else if (input.x != 0 && x != 0)
+        {
+            // Continue horizontal movement if we were moving horizontally and key still held
+            input = new Vector2(x, 0);
+        }
+        else if (input.y != 0 && y != 0)
+        {
+            // Continue vertical movement if we were moving vertically and key still held
+            input = new Vector2(0, y);
         }
         else if (x != 0)
         {
-            input = new Vector2(x, 0);    // Only horizontal movement
+            // Default to horizontal if pressed
+            input = new Vector2(x, 0);
+        }
+        else if (y != 0)
+        {
+            // Default to vertical if pressed
+            input = new Vector2(0, y);
         }
         else
         {
-            input = Vector2.zero;         // No movement
+            // No movement
+            input = Vector2.zero;
         }
+
+        // Store current input for next frame comparison
+        previousX = x;
+        previousY = y;
 
         // Update sprite direction based on movement input
         if (spriteController != null)
