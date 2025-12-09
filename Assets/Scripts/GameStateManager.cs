@@ -18,7 +18,9 @@ public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager Instance { get; private set; }
 
-    //Panels
+    // ------------------------------------------------------
+    // UI PANELS
+    // ------------------------------------------------------
     [Header("Panels")]
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject introPanel;
@@ -29,41 +31,66 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject gameOverPanel;
 
-    //Text
+    // ------------------------------------------------------
+    // UI TEXT
+    // ------------------------------------------------------
     [SerializeField] private TextMeshProUGUI collectiblesText;
     [SerializeField] private TextMeshProUGUI countDownText;
 
-    //Player
+    // ------------------------------------------------------
+    // PLAYER + SPAWN
+    // ------------------------------------------------------
     [SerializeField] private GameObject player;
     [SerializeField] private Transform mainSpawn;
 
     [SerializeField] private DialogueRunner dialogueRunner;
 
-    //Integers
-    public int numOfCollectibles = 0;
-    public int numOfTutorialCollectibles = 0;
-
+    // ------------------------------------------------------
+    // TIMER
+    // ------------------------------------------------------
     [SerializeField] private TextMeshProUGUI timerText;
     private TimerUI timer;
 
+
+    // ------------------------------------------------------
+    // GAME STATE
+    // ------------------------------------------------------
     public GameState CurrentState { get; private set; }
 
     // ------------------------------------------------------
-    // NEW: Power-ups stored here
+    // COLLECTIBLE COUNTERS (needed by Collectible.cs)
+    // ------------------------------------------------------
+    public int numOfCollectibles = 0;
+    public int numOfTutorialCollectibles = 0;
+
+    // ------------------------------------------------------
+    // POWER-UPS
     // ------------------------------------------------------
     private GameObject[] powerUps;
 
     // ------------------------------------------------------
-    // NEW: Key spawn system
+    // LEVEL SYSTEM
     // ------------------------------------------------------
-    [Header("Key Spawn")]
-    [SerializeField] private GameObject[] keyItems;        // your 2 keys
-    [SerializeField] private Transform[] keySpawnPoints;   // all spawn spots
+    [Header("Level Selector")]
+    [SerializeField] private int currentLevel = 1; // 1 or 2
+
+    // ---------------- LEVEL 1 ----------------
+    [Header("LEVEL 1 SETTINGS")]
+    [SerializeField] private GameObject[] level1Keys;        // keys only for level 1
+    [SerializeField] private Transform[] level1SpawnPoints;  // spawn positions for level 1
+    [SerializeField] private int level1KeyCount = 2;         // keys to spawn in level 1
+
+    // ---------------- LEVEL 2 ----------------
+    [Header("LEVEL 2 SETTINGS")]
+    [SerializeField] private GameObject[] level2Keys;        // keys only for level 2
+    [SerializeField] private Transform[] level2SpawnPoints;  // spawn positions for level 2
+    [SerializeField] private int level2KeyCount = 4;         // keys to spawn in level 2
+
 
 
     private void Awake()
     {
-        // Singleton pattern
+        // Singleton init
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -71,24 +98,25 @@ public class GameStateManager : MonoBehaviour
         }
 
         Instance = this;
-
         DontDestroyOnLoad(gameObject);
 
+        // Timer link
         timer = timerText.GetComponent<TimerUI>();
         if (timer == null)
-        {
-            Debug.LogError("Timer script not found");
-        }
+            Debug.LogError("TimerUI script missing from Timer Text.");
 
-        // ------------------------------------------------------
-        // NEW: Cache all power-ups in the scene
-        // ------------------------------------------------------
+        // Cache power-ups in scene
         powerUps = GameObject.FindGameObjectsWithTag("PowerUp");
 
         SetState(GameState.Start);
         mainMenuPanel.SetActive(true);
     }
 
+
+
+    // ------------------------------------------------------
+    // STATE CONTROL
+    // ------------------------------------------------------
     public void SetState(GameState newState)
     {
         CurrentState = newState;
@@ -97,8 +125,9 @@ public class GameStateManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl) &&
-            Input.GetKeyDown(KeyCode.LeftShift) &&
+        // Quick-start cheat
+        if (Input.GetKey(KeyCode.LeftControl) &&
+            Input.GetKey(KeyCode.LeftShift) &&
             Input.GetKeyDown(KeyCode.Q))
         {
             player.SetActive(true);
@@ -106,20 +135,17 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    public void startCountDown()
-    {
-        SetState(GameState.CountDown);
-    }
+    public void startCountDown() => SetState(GameState.CountDown);
+    public void goToIntro() => SetState(GameState.Intro);
 
-    public void goToIntro()
-    {
-        SetState(GameState.Intro);
-    }
 
-    // Updates the UI according to the CurrentState
+
+    // ------------------------------------------------------
+    // UI + STATE HANDLING
+    // ------------------------------------------------------
     public void UpdateUI()
     {
-        //Turn off all panels
+        //Turn off all panels first
         mainMenuPanel.SetActive(false);
         introPanel.SetActive(false);
         tutorialPanel.SetActive(false);
@@ -139,20 +165,14 @@ public class GameStateManager : MonoBehaviour
             case GameState.Playing:
                 gameHudPanel.SetActive(true);
                 infoPanel.SetActive(false);
+
                 timer.timerIsRunning = true;
                 timer.timeRemaining = 300f;
+
                 player.GetComponent<PlayerMovement>().lives = 3;
 
-                // ------------------------------------------------------
-                // NEW: respawn all power-ups on restart
-                // ------------------------------------------------------
                 RespawnAllPowerUps();
-
-                // ------------------------------------------------------
-                // NEW: spawn keys randomly at game start
-                // ------------------------------------------------------
-                SpawnKeysRandomly();
-
+                SpawnKeysForCurrentLevel();
                 break;
 
             case GameState.GameOver:
@@ -179,61 +199,83 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
+
+
     IEnumerator startGame()
     {
         countDownPanel.SetActive(true);
+
         countDownText.text = "3";
-
         yield return new WaitForSeconds(1f);
+
         countDownText.text = "2";
-
         yield return new WaitForSeconds(1f);
+
         countDownText.text = "1";
-
         yield return new WaitForSeconds(1f);
+
         countDownPanel.SetActive(false);
 
         SetState(GameState.Playing);
     }
 
+
+
     // ------------------------------------------------------
-    // NEW: Reactivate every power-up that was collected
+    // POWER-UPS RESET
     // ------------------------------------------------------
     public void RespawnAllPowerUps()
     {
         foreach (GameObject p in powerUps)
-        {
             if (p != null)
                 p.SetActive(true);
+    }
+
+
+
+    // ------------------------------------------------------
+    // LEVEL KEY SPAWNING
+    // ------------------------------------------------------
+    private void SpawnKeysForCurrentLevel()
+    {
+        if (currentLevel == 1)
+        {
+            SpawnKeys(level1Keys, level1SpawnPoints, level1KeyCount);
+        }
+        else
+        {
+            SpawnKeys(level2Keys, level2SpawnPoints, level2KeyCount);
         }
     }
 
-    // ------------------------------------------------------
-    // NEW: Randomize 2 keys without overlapping
-    // ------------------------------------------------------
-    public void SpawnKeysRandomly()
+    private void SpawnKeys(GameObject[] keys, Transform[] spawnPoints, int keyCount)
     {
-        if (keyItems.Length == 0 || keySpawnPoints.Length == 0)
+        if (keys.Length == 0 || spawnPoints.Length == 0 || keyCount <= 0)
             return;
 
-        // create list of available spawn indexes
-        System.Collections.Generic.List<int> available = new System.Collections.Generic.List<int>();
+        // Clamp keyCount
+        keyCount = Mathf.Min(keyCount, keys.Length);
+        keyCount = Mathf.Min(keyCount, spawnPoints.Length);
 
-        for (int i = 0; i < keySpawnPoints.Length; i++)
+        // Turn off ALL keys in this level
+        foreach (GameObject k in keys)
+            k.SetActive(false);
+
+        // Build list of available spawn indexes
+        System.Collections.Generic.List<int> available = new System.Collections.Generic.List<int>();
+        for (int i = 0; i < spawnPoints.Length; i++)
             available.Add(i);
 
-        // randomize each key separately
-        foreach (GameObject key in keyItems)
+        // Spawn correct number of keys
+        for (int i = 0; i < keyCount; i++)
         {
-            if (key == null) continue;
+            int r = Random.Range(0, available.Count);
+            int chosenSpot = available[r];
 
-            int index = Random.Range(0, available.Count);
-            int chosenSpot = available[index];
+            keys[i].transform.position = spawnPoints[chosenSpot].position;
+            keys[i].SetActive(true);
 
-            key.transform.position = keySpawnPoints[chosenSpot].position;
-            key.SetActive(true);
-
-            available.RemoveAt(index); // prevents overlap
+            available.RemoveAt(r);
         }
     }
 }
