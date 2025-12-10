@@ -36,6 +36,7 @@ public class GameStateManager : MonoBehaviour
     [Header("Player")]
     [SerializeField] private GameObject player;
     [SerializeField] private Transform mainSpawn;
+    [SerializeField] private Transform level2Spawn;
 
     [SerializeField] private DialogueRunner dialogueRunner;
 
@@ -52,7 +53,7 @@ public class GameStateManager : MonoBehaviour
     private GameObject[] powerUps;
 
     [Header("LEVEL SELECTOR")]
-    [SerializeField] private int currentLevel = 1;
+    [SerializeField] public int currentLevel = 1;
 
     [Header("LEVEL 1 SETTINGS")]
     [SerializeField] private GameObject[] level1Keys;
@@ -110,6 +111,13 @@ public class GameStateManager : MonoBehaviour
             player.SetActive(true);
             SetState(GameState.CountDown);
         }
+
+        if (Input.GetKey(KeyCode.LeftControl) &&
+            Input.GetKey(KeyCode.LeftShift) &&
+            Input.GetKeyDown(KeyCode.E))
+        {
+            numOfCollectibles = 2;
+        }
     }
 
 
@@ -135,7 +143,7 @@ public class GameStateManager : MonoBehaviour
                 keysSpawnedThisRun = false;
 
                 numOfCollectibles = 0;
-                collectiblesText.text = "0 / 2";
+                
                 break;
 
             case GameState.Intro:
@@ -178,8 +186,25 @@ public class GameStateManager : MonoBehaviour
                 break;
 
             case GameState.CountDown:
-                player.transform.position = mainSpawn.position;
+                if (currentLevel == 1)
+                {
+                    player.transform.position = mainSpawn.position;
+                }
+                else if (currentLevel == 2)
+                {
+                    player.transform.position = level2Spawn.position;
+                }
+               
                 dialogueRunner.Stop();
+
+                if (currentLevel == 1)
+                {
+                    collectiblesText.text = "0 / 2";
+                }
+                else if (currentLevel == 2)
+                {
+                    collectiblesText.text = "0 / 4";
+                }
                 StartCoroutine(startGame());
                 break;
         }

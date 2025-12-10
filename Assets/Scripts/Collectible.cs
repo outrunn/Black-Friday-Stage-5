@@ -22,7 +22,15 @@ public class Collectible : MonoBehaviour
             if (GameStateManager.Instance.CurrentState == GameState.Playing)
             {
                 GameStateManager.Instance.numOfCollectibles++;
-                collectiblesText.text = GameStateManager.Instance.numOfCollectibles + "/ 2";
+                
+                if (GameStateManager.Instance.currentLevel == 1)
+                {
+                    collectiblesText.text = GameStateManager.Instance.numOfCollectibles + "/ 2";
+                }
+                else if (GameStateManager.Instance.currentLevel == 2)
+                {
+                    collectiblesText.text = GameStateManager.Instance.numOfCollectibles + "/ 4";
+                }
             }
             else if (GameStateManager.Instance.CurrentState == GameState.Tutorial)
             {
