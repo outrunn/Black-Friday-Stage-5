@@ -4,8 +4,6 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
     private CircleCollider2D collider;
-    //[SerializeField] private bool tutorialCollectible;
-
     [SerializeField] private TextMeshProUGUI collectiblesText;
 
     void Awake()
@@ -15,24 +13,22 @@ public class Collectible : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        //check if the user collided with this object
+        // Check if the player collided with this object
         if (collision.CompareTag("Player"))
         {
-            Destroy(gameObject); //destroy this object
-            
+            // Instead of destroying the key, simply hide it
+            gameObject.SetActive(false);
+
             if (GameStateManager.Instance.CurrentState == GameState.Playing)
             {
-                GameStateManager.Instance.numOfCollectibles++; //increase the number ofcollectibles by 1
-
-                collectiblesText.text = GameStateManager.Instance.numOfCollectibles + "/ 2";  
+                GameStateManager.Instance.numOfCollectibles++;
+                collectiblesText.text = GameStateManager.Instance.numOfCollectibles + "/ 2";
             }
             else if (GameStateManager.Instance.CurrentState == GameState.Tutorial)
             {
-                GameStateManager.Instance.numOfTutorialCollectibles++; //increase the number ofcollectibles by 1
-
-                collectiblesText.text = GameStateManager.Instance.numOfTutorialCollectibles + "/ 1"; 
+                GameStateManager.Instance.numOfTutorialCollectibles++;
+                collectiblesText.text = GameStateManager.Instance.numOfTutorialCollectibles + "/ 1";
             }
-            
         }
     }
 }

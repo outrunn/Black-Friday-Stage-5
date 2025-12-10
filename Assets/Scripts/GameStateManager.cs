@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Yarn.Unity;
@@ -18,9 +19,6 @@ public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager Instance { get; private set; }
 
-    // ------------------------------------------------------
-    // UI PANELS
-    // ------------------------------------------------------
     [Header("Panels")]
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject introPanel;
@@ -31,101 +29,80 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject gameOverPanel;
 
-    // ------------------------------------------------------
-    // UI TEXT
-    // ------------------------------------------------------
+    [Header("UI Text")]
     [SerializeField] private TextMeshProUGUI collectiblesText;
     [SerializeField] private TextMeshProUGUI countDownText;
 
-    // ------------------------------------------------------
-    // PLAYER + SPAWN
-    // ------------------------------------------------------
+    [Header("Player")]
     [SerializeField] private GameObject player;
     [SerializeField] private Transform mainSpawn;
 
     [SerializeField] private DialogueRunner dialogueRunner;
 
-    // ------------------------------------------------------
-    // TIMER
-    // ------------------------------------------------------
+    [Header("Timer")]
     [SerializeField] private TextMeshProUGUI timerText;
     private TimerUI timer;
 
-
-    // ------------------------------------------------------
-    // GAME STATE
-    // ------------------------------------------------------
     public GameState CurrentState { get; private set; }
 
-    // ------------------------------------------------------
-    // COLLECTIBLE COUNTERS (needed by Collectible.cs)
-    // ------------------------------------------------------
     public int numOfCollectibles = 0;
     public int numOfTutorialCollectibles = 0;
 
-    // ------------------------------------------------------
-    // POWER-UPS
-    // ------------------------------------------------------
+    // PowerUps
     private GameObject[] powerUps;
 
-    // ------------------------------------------------------
-    // LEVEL SYSTEM
-    // ------------------------------------------------------
-    [Header("Level Selector")]
-    [SerializeField] private int currentLevel = 1; // 1 or 2
+    [Header("LEVEL SELECTOR")]
+    [SerializeField] private int currentLevel = 1;
 
-    // ---------------- LEVEL 1 ----------------
     [Header("LEVEL 1 SETTINGS")]
-    [SerializeField] private GameObject[] level1Keys;        // keys only for level 1
-    [SerializeField] private Transform[] level1SpawnPoints;  // spawn positions for level 1
-    [SerializeField] private int level1KeyCount = 2;         // keys to spawn in level 1
+    [SerializeField] private GameObject[] level1Keys;
+    [SerializeField] private Transform[] level1SpawnPoints;
+    [SerializeField] private int level1KeyCount = 2;
 
-    // ---------------- LEVEL 2 ----------------
     [Header("LEVEL 2 SETTINGS")]
-    [SerializeField] private GameObject[] level2Keys;        // keys only for level 2
-    [SerializeField] private Transform[] level2SpawnPoints;  // spawn positions for level 2
-    [SerializeField] private int level2KeyCount = 4;         // keys to spawn in level 2
+    [SerializeField] private GameObject[] level2Keys;
+    [SerializeField] private Transform[] level2SpawnPoints;
+    [SerializeField] private int level2KeyCount = 4;
 
+    // Track last spawn index per key (by level)
+    private Dictionary<GameObject, int> lastSpawn_L1 = new Dictionary<GameObject, int>();
+    private Dictionary<GameObject, int> lastSpawn_L2 = new Dictionary<GameObject, int>();
+
+    private bool keysSpawnedThisRun = false;
 
 
     private void Awake()
     {
-        // Singleton init
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // Timer link
         timer = timerText.GetComponent<TimerUI>();
-        if (timer == null)
-            Debug.LogError("TimerUI script missing from Timer Text.");
 
-        // Cache power-ups in scene
         powerUps = GameObject.FindGameObjectsWithTag("PowerUp");
+
+        // Initialize per-level tracking
+        foreach (var k in level1Keys) lastSpawn_L1[k] = -1;
+        foreach (var k in level2Keys) lastSpawn_L2[k] = -1;
 
         SetState(GameState.Start);
         mainMenuPanel.SetActive(true);
     }
 
 
-
-    // ------------------------------------------------------
-    // STATE CONTROL
-    // ------------------------------------------------------
     public void SetState(GameState newState)
     {
         CurrentState = newState;
         UpdateUI();
     }
 
+
     void Update()
     {
-        // Quick-start cheat
         if (Input.GetKey(KeyCode.LeftControl) &&
             Input.GetKey(KeyCode.LeftShift) &&
             Input.GetKeyDown(KeyCode.Q))
@@ -135,17 +112,13 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
+
     public void startCountDown() => SetState(GameState.CountDown);
     public void goToIntro() => SetState(GameState.Intro);
 
 
-
-    // ------------------------------------------------------
-    // UI + STATE HANDLING
-    // ------------------------------------------------------
     public void UpdateUI()
     {
-        //Turn off all panels first
         mainMenuPanel.SetActive(false);
         introPanel.SetActive(false);
         tutorialPanel.SetActive(false);
@@ -156,6 +129,15 @@ public class GameStateManager : MonoBehaviour
 
         switch (CurrentState)
         {
+            case GameState.Start:
+                mainMenuPanel.SetActive(true);
+
+                keysSpawnedThisRun = false;
+
+                numOfCollectibles = 0;
+                collectiblesText.text = "0 / 2";
+                break;
+
             case GameState.Intro:
                 introPanel.SetActive(true);
                 dialogueRunner.StartDialogue("IntroScript");
@@ -167,12 +149,16 @@ public class GameStateManager : MonoBehaviour
                 infoPanel.SetActive(false);
 
                 timer.timerIsRunning = true;
-                timer.timeRemaining = 300f;
 
                 player.GetComponent<PlayerMovement>().lives = 3;
 
                 RespawnAllPowerUps();
-                SpawnKeysForCurrentLevel();
+
+                if (!keysSpawnedThisRun)
+                {
+                    SpawnKeysForCurrentLevel();
+                    keysSpawnedThisRun = true;
+                }
                 break;
 
             case GameState.GameOver:
@@ -200,19 +186,18 @@ public class GameStateManager : MonoBehaviour
     }
 
 
-
     IEnumerator startGame()
     {
         countDownPanel.SetActive(true);
 
         countDownText.text = "3";
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1);
 
         countDownText.text = "2";
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1);
 
         countDownText.text = "1";
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1);
 
         countDownPanel.SetActive(false);
 
@@ -220,60 +205,53 @@ public class GameStateManager : MonoBehaviour
     }
 
 
-
-    // ------------------------------------------------------
-    // POWER-UPS RESET
-    // ------------------------------------------------------
     public void RespawnAllPowerUps()
     {
         foreach (GameObject p in powerUps)
-            if (p != null)
-                p.SetActive(true);
+            if (p) p.SetActive(true);
     }
 
 
-
-    // ------------------------------------------------------
-    // LEVEL KEY SPAWNING
-    // ------------------------------------------------------
     private void SpawnKeysForCurrentLevel()
     {
         if (currentLevel == 1)
-        {
-            SpawnKeys(level1Keys, level1SpawnPoints, level1KeyCount);
-        }
+            SpawnKeys(level1Keys, level1SpawnPoints, level1KeyCount, lastSpawn_L1);
         else
-        {
-            SpawnKeys(level2Keys, level2SpawnPoints, level2KeyCount);
-        }
+            SpawnKeys(level2Keys, level2SpawnPoints, level2KeyCount, lastSpawn_L2);
     }
 
-    private void SpawnKeys(GameObject[] keys, Transform[] spawnPoints, int keyCount)
+
+    private void SpawnKeys(GameObject[] keys, Transform[] spawnPoints, int keyCount, Dictionary<GameObject, int> lastSpawnTable)
     {
-        if (keys.Length == 0 || spawnPoints.Length == 0 || keyCount <= 0)
-            return;
+        keyCount = Mathf.Min(keyCount, keys.Length, spawnPoints.Length);
 
-        // Clamp keyCount
-        keyCount = Mathf.Min(keyCount, keys.Length);
-        keyCount = Mathf.Min(keyCount, spawnPoints.Length);
-
-        // Turn off ALL keys in this level
         foreach (GameObject k in keys)
             k.SetActive(false);
 
-        // Build list of available spawn indexes
-        System.Collections.Generic.List<int> available = new System.Collections.Generic.List<int>();
+        List<int> available = new List<int>();
         for (int i = 0; i < spawnPoints.Length; i++)
             available.Add(i);
 
-        // Spawn correct number of keys
+        // Remove last spawn index for each key
+        foreach (var key in keys)
+        {
+            int lastIndex = lastSpawnTable[key];
+            if (lastIndex != -1 && available.Contains(lastIndex))
+                available.Remove(lastIndex);
+        }
+
+        // Spawn keys
         for (int i = 0; i < keyCount; i++)
         {
+            GameObject key = keys[i];
+
             int r = Random.Range(0, available.Count);
             int chosenSpot = available[r];
 
-            keys[i].transform.position = spawnPoints[chosenSpot].position;
-            keys[i].SetActive(true);
+            key.transform.position = spawnPoints[chosenSpot].position;
+            key.SetActive(true);
+
+            lastSpawnTable[key] = chosenSpot;
 
             available.RemoveAt(r);
         }

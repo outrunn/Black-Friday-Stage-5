@@ -9,10 +9,28 @@ public class KeyJingle : MonoBehaviour
 
     private Vector3 originalPos;
 
-    void Start()
+    private void OnEnable()
     {
+        // Wait 1 frame to allow GameStateManager to place the key
+        StartCoroutine(DelayedStart());
+    }
+
+    IEnumerator DelayedStart()
+    {
+        // Wait until the key is fully repositioned
+        yield return null;
+
         originalPos = transform.localPosition;
-        InvokeRepeating(nameof(DoJingle), 0, interval);
+
+        // Start periodic jingle
+        InvokeRepeating(nameof(DoJingle), interval, interval);
+    }
+
+    private void OnDisable()
+    {
+        // Stop jingles when key is hidden
+        CancelInvoke();
+        StopAllCoroutines();
     }
 
     void DoJingle()
@@ -30,6 +48,7 @@ public class KeyJingle : MonoBehaviour
             transform.localPosition = originalPos + (Random.insideUnitSphere * intensity);
             yield return null;
         }
+
         transform.localPosition = originalPos;
     }
 }
