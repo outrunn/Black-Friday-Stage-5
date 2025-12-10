@@ -28,6 +28,7 @@ public class ExitScript : MonoBehaviour
                 if (collision.CompareTag("Player") && GameStateManager.Instance.numOfCollectibles == 2)
                 {
                     GameStateManager.Instance.currentLevel = 2; //set to level 2
+                    GameStateManager.Instance.numOfCollectibles = 0;
                     //player.transform.position = level2Spawn.position; //send player to level 2 spawn
                     GameStateManager.Instance.SetState(GameState.CountDown); //start countdown
                     // GameStateManager.Instance.SetState(GameState.Victory);

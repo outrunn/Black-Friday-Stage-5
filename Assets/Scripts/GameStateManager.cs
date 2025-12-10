@@ -199,11 +199,11 @@ public class GameStateManager : MonoBehaviour
 
                 if (currentLevel == 1)
                 {
-                    collectiblesText.text = "0 / 2";
+                    collectiblesText.text = numOfCollectibles + " / 2";
                 }
                 else if (currentLevel == 2)
                 {
-                    collectiblesText.text = "0 / 4";
+                    collectiblesText.text = numOfCollectibles + " / 4";
                 }
                 StartCoroutine(startGame());
                 break;
